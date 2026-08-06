@@ -16,6 +16,16 @@
     <p><img src="{{ project.image.url }}" alt="{{ project.title }}"></p>
   {% endif %}
 
+  {% if project.images.all %}
+    <div class="filmstrip" style="margin-top: 30px;">
+      {% for gallery_img in project.images.all %}
+        <figure class="frame" style="border-top: none; padding-top: 0;">
+          <img src="{{ gallery_img.image.url }}" alt="{{ project.title }} gallery image {{ forloop.counter }}">
+        </figure>
+      {% endfor %}
+    </div>
+  {% endif %}
+
   {% if project.url or project.github_url %}
     <div class="detail-links">
       {% if project.url %}<a class="cta" href="{{ project.url }}" target="_blank" rel="noopener">visit it →</a>{% endif %}

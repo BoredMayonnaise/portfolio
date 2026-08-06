@@ -223,9 +223,9 @@ main.container { padding-top: 64px; padding-bottom: 90px; min-height: 72vh; }
 
 /* ---------- stack grid ---------- */
 .stack-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
-.stack { border-top: 2px solid var(--ink); padding-top: 16px; }
-.stack .mark { color: var(--accent); display: inline-flex; align-items: center; }
-.stack .mark svg { height: 1.7rem; width: auto; }
+.stack { border-top: 2px solid var(--ink); padding-top: 16px; position: relative; z-index: 1; overflow: hidden; padding-bottom: 20px; }
+.stack .mark { position: absolute; right: -15px; bottom: -15px; color: var(--accent); opacity: 0.08; z-index: -1; pointer-events: none; display: flex; align-items: center; justify-content: center; }
+.stack .mark svg { height: 7.5rem; width: auto; }
 .stack h3 { font-family: var(--serif); font-weight: 400; font-size: 1.35rem; margin: 8px 0 8px; }
 .stack p { color: var(--muted); font-size: 0.93rem; margin: 0; }
 

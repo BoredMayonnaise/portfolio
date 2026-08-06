@@ -2,8 +2,15 @@ from django.contrib import admin
 
 from security.admin_site import secure_admin_site
 
-from .models import ContactMessage, Photo, Post, Project
+from .models import ContactMessage, Photo, Post, Project, ProjectImage, PostImage
 
+class ProjectImageInline(admin.TabularInline):
+    model = ProjectImage
+    extra = 1
+
+class PostImageInline(admin.TabularInline):
+    model = PostImage
+    extra = 1
 
 @admin.register(Project, site=secure_admin_site)
 class ProjectAdmin(admin.ModelAdmin):
@@ -11,7 +18,7 @@ class ProjectAdmin(admin.ModelAdmin):
     list_filter = ("featured",)
     search_fields = ("title", "tech_stack")
     prepopulated_fields = {"slug": ("title",)}
-
+    inlines = [ProjectImageInline]
 
 @admin.register(Post, site=secure_admin_site)
 class PostAdmin(admin.ModelAdmin):
@@ -19,7 +26,7 @@ class PostAdmin(admin.ModelAdmin):
     list_filter = ("published",)
     search_fields = ("title", "excerpt")
     prepopulated_fields = {"slug": ("title",)}
-
+    inlines = [PostImageInline]
 
 @admin.register(ContactMessage, site=secure_admin_site)
 class ContactMessageAdmin(admin.ModelAdmin):
