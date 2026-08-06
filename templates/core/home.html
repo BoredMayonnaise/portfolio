@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}mark ocampos — engineer · cryptographer · photographer{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-text">
+    <p class="eyebrow hero-anim">hi, i'm mark ocampos — nice to meet you</p>
+    <h1 class="hero-anim delay-1">Data should be <em>safe</em>. Code should be <em>clean</em>. And light is worth <em>chasing</em>.</h1>
+    <p class="lede hero-anim delay-2">I build privacy-first web apps with Django, enjoy the quiet logic of cryptography, and keep a camera close for when the light gets interesting. Your data is treated like my own.</p>
+    <div class="hero-actions hero-anim delay-2">
+      <a class="cta" href="{% url 'core:project_list' %}">see the work →</a>
+      <a class="cta ghost" href="{% url 'core:contact' %}">say hello</a>
+    </div>
+  </div>
+
+  <div class="hero-figure hero-anim delay-1">
+    <div class="figure-media">
+      <div class="figure-bg" aria-hidden="true"></div>
+      {% include "_figure.html" %}
+    </div>
+    <p class="fig-caption mono"><span class="diamond">◇</span> arms folded · calm · ready <span class="diamond">◇</span></p>
+  </div>
+</section>
+
+<div class="ledger hero-anim delay-2" aria-hidden="true">
+  <span class="mono">django</span><i>◇</i><span class="mono">secure apis</span><i>◇</i><span class="mono">cryptography</span><i>◇</i><span class="mono">privacy</span><i>◇</i><span class="mono">photography</span><i>◇</i><span class="mono">logic</span>
+</div>
+
+<section class="section">
+  <div class="section-head reveal">
+    <span class="index mono">01</span>
+    <h2>what I do</h2>
+    <span class="head-rule"></span>
+    <span class="head-note mono">four things, no filler</span>
+  </div>
+  <div class="stack-grid">
+    <div class="stack reveal">
+      <span class="mark">{% include "_koboyo_shield.html" %}</span>
+      <h3>data protection</h3>
+      <p>Encryption in motion and at rest, the least data collected, and safe defaults. I design so that leaking is the hard thing, not the default.</p>
+    </div>
+    <div class="stack reveal">
+      <span class="mark">{% include "_koboyo_cipher.html" %}</span>
+      <h3>cryptography</h3>
+      <p>Hashes, key exchange, one-way functions. I genuinely love the maths that keeps a secret — and the discipline of proving it stays that way.</p>
+    </div>
+    <div class="stack reveal">
+      <span class="mark">{% include "_koboyo_code.html" %}</span>
+      <h3>logic &amp; systems</h3>
+      <p>Correct by construction, auditable, boring in the best way. Clean Django, clear APIs, and behaviour you can reason about.</p>
+    </div>
+    <div class="stack reveal">
+      <span class="mark">{% include "_koboyo_camera.html" %}</span>
+      <h3>photography</h3>
+      <p>A second pair of eyes. Composition, light, restraint — the same discipline that keeps my code minimal finds its way into my frames.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head reveal">
+    <span class="index mono">02</span>
+    <h2>selected work</h2>
+    <span class="head-rule"></span>
+    <span class="head-note mono">a few endpoints i'm proud of</span>
+  </div>
+  {% if projects %}
+    <div class="works">
+      {% for project in projects %}
+        <article class="work reveal">
+          <span class="w-num mono">{{ forloop.counter|stringformat:"02d" }}</span>
+          <div class="w-body">
+            <h3><a href="{{ project.get_absolute_url }}">{{ project.title }}</a></h3>
+            <p>{{ project.description|truncatewords:24 }}</p>
+            <p class="tags mono">{{ project.tech_list|join:" · "|lower }}</p>
+          </div>
+          <a class="w-arrow mono" href="{{ project.get_absolute_url }}">view →</a>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="empty mono">nothing shipped yet — check back soon.</p>
+  {% endif %}
+</section>
+
+<section class="section">
+  <div class="section-head reveal">
+    <span class="index mono">03</span>
+    <h2>frames</h2>
+    <span class="head-rule"></span>
+    <span class="head-note mono">a strip, not a grid</span>
+  </div>
+  {% if photos %}
+    <div class="filmstrip reveal">
+      {% for photo in photos %}
+        <figure class="frame">
+          {% if photo.image %}
+            <img src="{{ photo.image.url }}" alt="{{ photo.alt|default:photo.title }}">
+          {% else %}
+            <div class="frame-ph"></div>
+          {% endif %}
+          <figcaption class="mono">
+            <span class="fx">{{ photo.hash|slice:":8"|default:"00000000" }}.jpg</span>
+            <span class="fm">{{ photo.title }}{% if photo.location %} · {{ photo.location }}{% endif %}</span>
+          </figcaption>
+        </figure>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="empty mono">the shutter is loaded — frames coming.</p>
+  {% endif %}
+</section>
+
+<section class="section">
+  <div class="section-head reveal">
+    <span class="index mono">04</span>
+    <h2>journal</h2>
+    <span class="head-rule"></span>
+    <span class="head-note mono">recent entries</span>
+  </div>
+  {% if latest_posts %}
+    <ul class="entries reveal">
+      {% for post in latest_posts %}
+        <li>
+          <span class="e-date mono">{{ post.created_at|date:"Y · M d" }}</span>
+          <a class="e-title" href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+          <span class="e-arrow mono">→</span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="empty mono">log empty.</p>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}{{ project.title }} | mark ocampos{% endblock %}
+
+{% block content %}
+<article class="detail hero-anim">
+  <p class="eyebrow mono">/work/{{ project.slug }}/ <span class="muted">· status 200 ok</span></p>
+  <h1>{{ project.title }}</h1>
+  <p class="tags mono">{{ project.tech_list|join:" · "|lower }}</p>
+
+  <div class="body">
+    {{ project.description|linebreaks }}
+  </div>
+
+  {% if project.image %}
+    <p><img src="{{ project.image.url }}" alt="{{ project.title }}"></p>
+  {% endif %}
+
+  {% if project.url or project.github_url %}
+    <div class="detail-links">
+      {% if project.url %}<a class="cta" href="{{ project.url }}" target="_blank" rel="noopener">visit it →</a>{% endif %}
+      {% if project.github_url %}<a class="cta ghost" href="{{ project.github_url }}" target="_blank" rel="noopener">read the source</a>{% endif %}
+    </div>
+  {% endif %}
+
+  <p class="mono back"><a href="{% url 'core:project_list' %}">← back to /work</a></p>
+</article>
+{% endblock %}

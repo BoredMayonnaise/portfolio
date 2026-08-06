@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}denied | mark ocampos{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <header class="page-head hero-anim">
+    <p class="eyebrow mono">attempt logged · nice try</p>
+    <h1>{{ word }}<em>.</em></h1>
+    <p class="sub">This door doesn't open for you. Your attempt has been recorded, no credentials were accepted, and this is all you get.</p>
+    <div class="hero-actions hero-anim delay-2">
+      <a class="cta" href="{% url 'core:home' %}">back to home →</a>
+    </div>
+  </header>
+
+  <div class="hero-figure hero-anim delay-1">
+    <div class="figure-media">
+      <div class="figure-bg" aria-hidden="true"></div>
+      {% include "_koboyo_crossing.html" %}
+    </div>
+    <p class="fig-caption mono"><span class="diamond">◇</span> person crossing fingers · not this time <span class="diamond">◇</span></p>
+  </div>
+</section>
+{% endblock %}

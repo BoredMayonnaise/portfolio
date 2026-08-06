@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}contact | mark ocampos{% endblock %}
+
+{% block content %}
+<div class="contact-layout">
+  <header class="page-head hero-anim">
+    <p class="eyebrow mono">POST /contact → 201 created</p>
+    <h1>Say <em>hello</em></h1>
+    <p class="sub">Messages travel over TLS and land somewhere only I can read. Nothing is tracked, nothing is sold, nothing stays longer than it needs to.</p>
+
+    {% if form_sent %}
+      <div class="contact-success hero-anim">
+        <div class="figure-mini">
+          <div class="figure-media">
+            <div class="figure-bg" aria-hidden="true"></div>
+            {% include "_koboyo_receive.html" %}
+          </div>
+          <p class="fig-caption mono"><span class="diamond">◇</span> received · replied to in kind <span class="diamond">◇</span></p>
+        </div>
+        {% if messages %}
+          <div class="alert">
+            <span class="diamond">◇</span>
+            {% for message in messages %}{{ message }}{% endfor %}
+          </div>
+        {% endif %}
+        <p class="sub">It's sitting in my inbox now — quiet, encrypted, read only by me. I usually reply within a day or two.</p>
+        <p class="mono"><a class="link" href="{% url 'core:home' %}">← back home</a></p>
+      </div>
+    {% else %}
+      {% if messages %}
+        <div class="alert">
+          <span class="diamond">◇</span>
+          {% for message in messages %}{{ message }}{% endfor %}
+        </div>
+      {% endif %}
+
+      <form method="post" class="contact-form">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <p>
+          {{ form.name.label_tag }}
+          {{ form.name }}
+          {{ form.name.errors }}
+        </p>
+        <p>
+          {{ form.email.label_tag }}
+          {{ form.email }}
+          {{ form.email.errors }}
+        </p>
+        <p>
+          {{ form.message.label_tag }}
+          {{ form.message }}
+          {{ form.message.errors }}
+        </p>
+        <button type="submit" class="cta">send it →</button>
+      </form>
+    {% endif %}
+  </header>
+
+  <aside class="contact-side hero-anim delay-1">
+    <div class="figure-mini">
+      <div class="figure-media">
+        <div class="figure-bg" aria-hidden="true"></div>
+        {% include "_headset.html" %}
+      </div>
+      <p class="fig-caption mono"><span class="diamond">◇</span> reviewer headset · listening <span class="diamond">◇</span></p>
+    </div>
+    <div class="stamp mono" aria-hidden="true">privacy-first<br>since 2026</div>
+    <ul class="channels">
+      <li><span class="mono label">pgp / ed25519</span><span class="mono">B3:7A:4F:9E</span></li>
+      <li><span class="mono label">work</span><a class="mono" href="{% url 'core:project_list' %}">/work</a></li>
+      <li><span class="mono label">journal</span><a class="mono" href="{% url 'core:blog_list' %}">/journal</a></li>
+      <li><span class="mono label">state</span><span class="mono ok">listening ◈</span></li>
+    </ul>
+  </aside>
+</div>
+{% endblock %}

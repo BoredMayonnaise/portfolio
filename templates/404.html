@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}404 — not found | mark ocampos{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <header class="page-head hero-anim">
+    <p class="eyebrow mono">error 404 — not found</p>
+    <h1>This path leads <em>nowhere</em>.</h1>
+    <p class="sub">The page you're after doesn't exist, or it moved. Nothing leaked, nothing lost — it's just not here.</p>
+    <div class="hero-actions hero-anim delay-2">
+      <a class="cta" href="{% url 'core:home' %}">back to home →</a>
+      <a class="cta ghost" href="{% url 'core:project_list' %}">see the work</a>
+    </div>
+  </header>
+
+  <div class="hero-figure hero-anim delay-1">
+    <div class="figure-media">
+      <div class="figure-bg" aria-hidden="true"></div>
+      {% include "_koboyo_shrug.html" %}
+    </div>
+    <p class="fig-caption mono"><span class="diamond">◇</span> both palms up · nothing here <span class="diamond">◇</span></p>
+  </div>
+</section>
+{% endblock %}
