@@ -5,6 +5,23 @@ from django.core.files.base import ContentFile
 from django.db import models
 from django.utils.text import slugify
 from django.urls import reverse
+from io import BytesIO
+from PIL import Image
+
+def optimize_image_to_webp(image_field, quality=80):
+    if not image_field or getattr(image_field, '_committed', True):
+        return
+    try:
+        img = Image.open(image_field)
+        if img.format == 'WEBP':
+            return
+        output = BytesIO()
+        img.save(output, format='WEBP', quality=quality)
+        output.seek(0)
+        new_name = os.path.splitext(image_field.name)[0] + '.webp'
+        image_field.save(new_name, ContentFile(output.read()), save=False)
+    except Exception:
+        pass
 
 
 class Project(models.Model):
@@ -28,6 +45,7 @@ class Project(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)
+        optimize_image_to_webp(self.image)
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -129,6 +147,7 @@ class Photo(models.Model):
                 pass
 
     def save(self, *args, **kwargs):
+        optimize_image_to_webp(self.image)
         data = self._read_bytes()
         digest = hashlib.sha256(data).hexdigest() if data else ""
         if digest:
@@ -146,3 +165,35 @@ class Photo(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class ProjectImage(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="images")
+    image = models.ImageField(upload_to="projects/gallery/")
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ("order", "id")
+
+    def save(self, *args, **kwargs):
+        optimize_image_to_webp(self.image)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.project.title} Image"
+
+
+class PostImage(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="images")
+    image = models.ImageField(upload_to="posts/gallery/")
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ("order", "id")
+
+    def save(self, *args, **kwargs):
+        optimize_image_to_webp(self.image)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.post.title} Image"
