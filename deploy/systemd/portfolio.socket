@@ -1,8 +1,0 @@
-[Unit]
-Description=gunicorn socket for portfolio
-
-[Socket]
-ListenStream=/run/portfolio.sock
-
-[Install]
-WantedBy=sockets.target

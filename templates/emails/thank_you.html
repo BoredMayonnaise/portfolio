@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ h1_text }}</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #090b03; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #deefef; -webkit-font-smoothing: antialiased;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #090b03; padding: 40px 16px;">
+    <tr>
+      <td align="center">
+        <!-- Main Card -->
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width: 580px; background-color: #11160f; border: 1px solid #1f2d1c; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);">
+          
+          <!-- Green Accent Bar -->
+          <tr>
+            <td style="height: 4px; background: #00ff66; font-size: 0; line-height: 0;">&nbsp;</td>
+          </tr>
+
+          <!-- Header / Tag -->
+          <tr>
+            <td style="padding: 32px 36px 8px;">
+              <span style="font-family: 'SFMono-Regular', Consolas, 'Courier New', monospace; font-size: 11px; letter-spacing: 2px; color: #00ff66; text-transform: uppercase; font-weight: bold;">
+                &#9670;&nbsp; {{ header_tag }}
+              </span>
+            </td>
+          </tr>
+
+          <!-- Heading -->
+          <tr>
+            <td style="padding: 12px 36px 16px;">
+              <h1 style="margin: 0; font-size: 26px; line-height: 1.3; color: #ffffff; font-weight: 700; letter-spacing: -0.01em;">
+                {{ h1_text }}
+              </h1>
+            </td>
+          </tr>
+
+          <!-- Message Body -->
+          <tr>
+            <td style="padding: 0 36px 28px; font-size: 15px; line-height: 1.7; color: #b8c9c0;">
+              {{ p_text|safe }}
+            </td>
+          </tr>
+
+          <!-- Divider -->
+          <tr>
+            <td style="padding: 0 36px;">
+              <div style="border-top: 1px solid #1c2719; height: 1px; line-height: 1px; font-size: 1px;">&nbsp;</div>
+            </td>
+          </tr>
+
+          <!-- Signature Block -->
+          <tr>
+            <td style="padding: 24px 36px 32px;">
+              <table role="presentation" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td>
+                    <div style="font-size: 16px; font-weight: 700; color: #ffffff; letter-spacing: 0.05em;">
+                      MARK OCAMPOS
+                    </div>
+                    <div style="font-family: 'SFMono-Regular', Consolas, 'Courier New', monospace; font-size: 12px; color: #00ff66; margin-top: 4px;">
+                      Web Architect
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Footer Bar -->
+          <tr>
+            <td style="padding: 16px 36px; background-color: #0c100b; border-top: 1px solid #182215; font-family: 'SFMono-Regular', Consolas, 'Courier New', monospace; font-size: 11px; color: #5a6e60; letter-spacing: 0.5px;">
+              markocampos.rhymvex.space &bull; Secure Dispatch
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

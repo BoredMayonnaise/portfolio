@@ -1,0 +1,35 @@
+{% load portfolio_tags %}
+<div class="brief-flow" data-brief-wizard data-submit-url="{% url 'core:brief_submit' %}">
+  <div class="brief-ask">
+    <p class="brief-count mono" aria-live="polite"></p>
+    <div class="brief-progress" aria-hidden="true"><div class="brief-progress-fill"></div></div>
+
+    <p class="brief-question"></p>
+    <p class="brief-multi-hint mono" hidden>Select all that apply</p>
+
+    <div class="brief-email" hidden>
+      <label class="brief-email-label" for="brief-email">Where should we send your initial assessment?</label>
+      <input type="email" id="brief-email" name="email" autocomplete="email" placeholder="you@yourbusiness.com">
+      <p class="brief-error" role="alert"></p>
+    </div>
+  </div>
+
+  <div class="brief-answers">
+    <div class="brief-options" role="radiogroup"></div>
+
+    <div class="brief-nav">
+      <button type="button" class="brief-back mono">◀ back</button>
+      <button type="submit" class="cta brief-next">Next ▶</button>
+    </div>
+  </div>
+
+  <div class="brief-success" hidden>
+    <p class="eyebrow mono">◇ BRIEF RECEIVED</p>
+    <h2 class="brief-success-title">Sent<em>!</em></h2>
+    
+    <p class="mono brief-success-links"><a href="{% url 'core:home' %}">◀ Home</a></p>
+  </div>
+
+  <script id="brief-data" type="application/json">{% brief_questions_json %}</script>
+  <form class="brief-csrf" aria-hidden="true">{% csrf_token %}</form>
+</div>

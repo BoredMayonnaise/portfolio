@@ -1,0 +1,12 @@
+<article class="project-card reveal">
+  <a class="project-visual visual-{{ forloop.counter }}" href="{{ project.get_absolute_url }}" aria-label="Explore {{ project.title }}">
+    {% if project.image %}<img src="{{ project.responsive_url }}"{% if project.responsive_srcset %} srcset="{{ project.responsive_srcset }}" sizes="{% if forloop.first or forloop.counter == 2 and forloop.last %}(max-width: 540px) calc(100vw - 40px), (max-width: 820px) calc(100vw - 48px), (max-width: 1400px) calc(100vw - 96px), 1320px{% else %}(max-width: 540px) calc(100vw - 40px), (max-width: 820px) calc(100vw - 48px), (max-width: 1400px) calc((100vw - 128px) / 2), 644px{% endif %}"{% endif %} alt="{{ project.title }} project preview" loading="lazy" width="1200" height="800">{% else %}<span class="project-art" aria-hidden="true"><span></span><span></span><span></span></span><span class="visual-caption mono">{{ project.tech_list|first|default:"DIGITAL EXPLORATION" }}</span>{% endif %}
+    <span class="project-open" aria-hidden="true">↗</span>
+  </a>
+  <div class="project-info"><div><p class="eyebrow">LV {{ forloop.counter|stringformat:"02d" }}</p><h3><a href="{{ project.get_absolute_url }}">{{ project.title }}</a></h3></div><div><p class="tags mono">{% for t in project.tech_list|slice:":4" %}<span class="chip">{{ t }}</span>{% endfor %}</p></div></div>
+  <div class="project-summary">
+    <p>{{ project.description|truncatewords:28 }}</p>
+    {% if project.role %}<p><strong>My role:</strong> {{ project.role|truncatewords:16 }}</p>{% endif %}
+    {% if project.outcome %}<p><strong>Outcome:</strong> {{ project.outcome|truncatewords:24 }}</p>{% endif %}
+  </div>
+</article>

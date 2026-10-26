@@ -4,35 +4,78 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}mark ocampos — engineer · cryptographer · photographer{% endblock %}</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Sora:wght@400;500;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/style.css' %}?v=4">
+
+  {# ── Primary meta ──────────────────────────────────────────────────────── #}
+  <title>{% block title %}Mark Ocampos — Thoughtful engineering & creative work{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}Mark Ocampos — independent web engineer. Thoughtful web applications, considered interfaces, and privacy-conscious engineering.{% endblock %}">
+  <meta name="author" content="Mark Ocampos">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://markocampos.rhymvex.space{{ request.path }}">
+
+  {# ── Open Graph / social ───────────────────────────────────────────────── #}
+  <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+  <meta property="og:url" content="https://markocampos.rhymvex.space{{ request.path }}">
+  <meta property="og:title" content="{% block og_title %}Mark Ocampos — Thoughtful engineering & creative work{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}Independent web engineering with a creative perspective. Explore my work and start a project.{% endblock %}">
+  <meta property="og:image" content="{% block og_image %}https://markocampos.rhymvex.space{% static 'img/og-card.png' %}{% endblock %}">
+  <meta property="og:site_name" content="Mark Ocampos">
+  <meta property="og:locale" content="en_US">
+
+  {# ── Twitter / X card ──────────────────────────────────────────────────── #}
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{% block twitter_title %}mark ocampos{% endblock %}">
+  <meta name="twitter:description" content="{% block twitter_description %}Independent web engineering with a creative perspective.{% endblock %}">
+  <meta name="twitter:image" content="{% block twitter_image %}https://markocampos.rhymvex.space{% static 'img/og-card.png' %}{% endblock %}">
+
+  {# ── Self-hosted fonts — no Google CDN ────────────────────────────────── #}
+  <link rel="preload" href="{% static 'fonts/instrument-serif-regular.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{% static 'fonts/sora-400.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{% static 'fonts/space-mono-400.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{% static 'css/fonts.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/brand.css' %}">
+  <link rel="stylesheet" href="{% static 'css/loader.css' %}">
+  <link rel="stylesheet" href="{% static 'css/pages.css' %}">
+  <script src="{% static 'js/gsap.min.js' %}"></script>
+  {% block extra_head %}{% endblock %}
   <script src="{% static 'js/main.js' %}" defer></script>
+  <script src="{% static 'js/brief.js' %}" defer></script>
+  <script src="{% static 'js/pages.js' %}" defer></script>
 </head>
-<body>
+<body class="{% block body_class %}pg{% endblock %}">
+  {% block site_shell %}
+  <a class="skip-link" href="#main-content">skip to content</a>
   <header class="site-header">
+    {% load portfolio_tags %}
     <div class="container">
-      <a class="brand" href="{% url 'core:home' %}">mark ocampos<span class="dot">.</span></a>
-      <nav>
-        <a href="{% url 'core:home' %}">home</a>
-        <a href="{% url 'core:project_list' %}">work</a>
-        <a href="{% url 'core:blog_list' %}">journal</a>
-        <a href="{% url 'core:contact' %}">contact</a>
+      <a class="brand" href="{% url 'core:home' %}" aria-label="Home"><img src="{% static 'brand/brand_logo_icon.png' %}" alt="" class="brand-logo-icon" width="44" height="44"></a>
+      <nav aria-label="Main navigation">
+        <a href="{% url 'core:project_list' %}" class="{% active_nav 'core:project_list' %}"{% if request.resolver_match.url_name == 'project_list' or request.resolver_match.url_name == 'project_detail' %} aria-current="page"{% endif %}>Projects</a>
+        <a href="{% url 'core:home' %}#player">About</a>
+        <a href="{% url 'core:blog_list' %}" class="{% active_nav 'core:blog_list' %}"{% if request.resolver_match.url_name == 'blog_list' or request.resolver_match.url_name == 'post_detail' %} aria-current="page"{% endif %}>Journal</a>
+        <a href="{% url 'core:contact' %}" class="{% active_nav 'core:contact' %}"{% if request.resolver_match.url_name == 'contact' %} aria-current="page"{% endif %}>Contact</a>
       </nav>
     </div>
   </header>
 
-  <main class="container">
+  <main class="container" id="main-content">
     {% block content %}{% endblock %}
   </main>
 
   <footer class="site-footer">
     <div class="container">
-      <p class="mono">your data, my responsibility · built by hand, no tracker</p>
-      <p class="mono">icons by <a href="https://iconify.design/" target="_blank" rel="noopener">iconify</a> · powered by <a href="https://www.djangoproject.com/" target="_blank" rel="noopener">django</a></p>
+      <a class="footer-name" href="{% url 'core:home' %}">Mark Ocampos</a>
+      <div class="footer-meta"><span class="mono">© {% now "Y" %}</span> <a href="{% url 'core:sitemap' %}">Map</a></div>
     </div>
   </footer>
+  {% endblock site_shell %}
+
+  {# ── Lightbox overlay ──────────────────────────────────────────────────── #}
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer" hidden>
+    <button class="lb-close" aria-label="Close">✕</button>
+    <img class="lb-img" src="" alt="">
+    <p class="lb-caption mono"></p>
+  </div>
+  {% block extra_scripts %}{% endblock %}
 </body>
 </html>

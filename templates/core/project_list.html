@@ -1,39 +1,9 @@
 {% extends "base.html" %}
-
-{% block title %}work | mark ocampos{% endblock %}
-
+{% block title %}Work — Mark Ocampos{% endblock %}
+{% block meta_description %}Web applications and technical explorations by independent web engineer Mark Ocampos.{% endblock %}
+{% block og_title %}Work — Mark Ocampos{% endblock %}
 {% block content %}
-<section class="hero">
-  <header class="page-head hero-anim">
-    <p class="eyebrow mono">index of /work</p>
-    <h1>Things I've <em>built</em></h1>
-    <p class="sub">Each project is an endpoint — auditable, observable, and careful with the data it touches.</p>
-  </header>
-
-  <div class="hero-figure hero-anim delay-1">
-    <div class="figure-media">
-      <div class="figure-bg" aria-hidden="true"></div>
-      {% include "_koboyo_bricks.html" %}
-    </div>
-    <p class="fig-caption mono"><span class="diamond">◇</span> stacking bricks · built layer by layer <span class="diamond">◇</span></p>
-  </div>
-</section>
-
-{% if projects %}
-  <div class="works">
-    {% for project in projects %}
-      <article class="work reveal">
-        <span class="w-num mono">{{ forloop.counter|stringformat:"02d" }}</span>
-        <div class="w-body">
-          <h3><a href="{{ project.get_absolute_url }}">{{ project.title }}</a></h3>
-          <p>{{ project.description|truncatewords:30 }}</p>
-          <p class="tags mono">{{ project.tech_list|join:" · "|lower }}</p>
-        </div>
-        <a class="w-arrow mono" href="{{ project.get_absolute_url }}">view →</a>
-      </article>
-    {% endfor %}
-  </div>
-{% else %}
-  <p class="empty mono">nothing shipped yet — check back soon.</p>
-{% endif %}
+<header class="page-head hero-anim"><p class="eyebrow">Level select / Projects</p><h1>Projects<em>.</em></h1></header>
+{% if projects %}<div class="project-grid featured-grid">{% for project in projects %}{% include "core/_project_card.html" %}{% endfor %}</div>{% else %}<p class="empty mono">Coming soon</p>{% endif %}
+{% include "core/_contact_banner.html" %}
 {% endblock %}

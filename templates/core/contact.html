@@ -1,78 +1,51 @@
 {% extends "base.html" %}
 
-{% block title %}contact | mark ocampos{% endblock %}
-
+{% block title %}Contact — Mark Ocampos{% endblock %}
+{% block meta_description %}Tell Mark Ocampos about your project. Send a short message or complete the optional eight-question project brief.{% endblock %}
 {% block content %}
-<div class="contact-layout">
+<div class="contact-page">
   <header class="page-head hero-anim">
-    <p class="eyebrow mono">POST /contact → 201 created</p>
-    <h1>Say <em>hello</em></h1>
-    <p class="sub">Messages travel over TLS and land somewhere only I can read. Nothing is tracked, nothing is sold, nothing stays longer than it needs to.</p>
-
-    {% if form_sent %}
-      <div class="contact-success hero-anim">
-        <div class="figure-mini">
-          <div class="figure-media">
-            <div class="figure-bg" aria-hidden="true"></div>
-            {% include "_koboyo_receive.html" %}
-          </div>
-          <p class="fig-caption mono"><span class="diamond">◇</span> received · replied to in kind <span class="diamond">◇</span></p>
-        </div>
-        {% if messages %}
-          <div class="alert">
-            <span class="diamond">◇</span>
-            {% for message in messages %}{{ message }}{% endfor %}
-          </div>
-        {% endif %}
-        <p class="sub">It's sitting in my inbox now — quiet, encrypted, read only by me. I usually reply within a day or two.</p>
-        <p class="mono"><a class="link" href="{% url 'core:home' %}">← back home</a></p>
-      </div>
-    {% else %}
-      {% if messages %}
-        <div class="alert">
-          <span class="diamond">◇</span>
-          {% for message in messages %}{{ message }}{% endfor %}
-        </div>
-      {% endif %}
-
-      <form method="post" class="contact-form">
-        {% csrf_token %}
-        {{ form.non_field_errors }}
-        <p>
-          {{ form.name.label_tag }}
-          {{ form.name }}
-          {{ form.name.errors }}
-        </p>
-        <p>
-          {{ form.email.label_tag }}
-          {{ form.email }}
-          {{ form.email.errors }}
-        </p>
-        <p>
-          {{ form.message.label_tag }}
-          {{ form.message }}
-          {{ form.message.errors }}
-        </p>
-        <button type="submit" class="cta">send it →</button>
-      </form>
-    {% endif %}
+    <p class="eyebrow mono">Player 2 / Contact</p>
+    <h1>Let’s build <em>something.</em></h1>
+    <p class="contact-intro">Have a project in mind, or a workflow that needs work? Tell me what you need. I’ll review your message and reply by email with next steps.</p>
   </header>
 
-  <aside class="contact-side hero-anim delay-1">
-    <div class="figure-mini">
-      <div class="figure-media">
-        <div class="figure-bg" aria-hidden="true"></div>
-        {% include "_headset.html" %}
-      </div>
-      <p class="fig-caption mono"><span class="diamond">◇</span> reviewer headset · listening <span class="diamond">◇</span></p>
+  {% if messages %}
+    <div class="message-status" id="message-status" role="status" tabindex="-1">
+      {% for message in messages %}<p>{{ message }}</p>{% endfor %}
     </div>
-    <div class="stamp mono" aria-hidden="true">privacy-first<br>since 2026</div>
-    <ul class="channels">
-      <li><span class="mono label">pgp / ed25519</span><span class="mono">B3:7A:4F:9E</span></li>
-      <li><span class="mono label">work</span><a class="mono" href="{% url 'core:project_list' %}">/work</a></li>
-      <li><span class="mono label">journal</span><a class="mono" href="{% url 'core:blog_list' %}">/journal</a></li>
-      <li><span class="mono label">state</span><span class="mono ok">listening ◈</span></li>
-    </ul>
-  </aside>
+  {% endif %}
+
+  <section class="contact-short" aria-labelledby="message-heading">
+    <h2 id="message-heading">Send a <em>message.</em></h2>
+    <form class="contact-form" method="post" action="{% url 'core:contact' %}">
+      {% csrf_token %}
+      {{ form.honeypot }}
+      {% if form.errors %}
+        <div class="form-errors" role="alert" tabindex="-1">
+          <p>Please check your message.</p>
+          {{ form.non_field_errors }}
+          <ul>{% for field in form.visible_fields %}{% if field.errors %}<li><a href="#{{ field.id_for_label }}">Check {{ field.label|lower }}</a></li>{% endif %}{% endfor %}</ul>
+        </div>
+      {% endif %}
+      {% for field in form.visible_fields %}
+        <div class="contact-field">
+          {{ field.label_tag }}
+          {% if field.name == 'message' %}<p id="message-hint" class="field-hint">A few sentences about your project or question. At least 10 words.</p>{% endif %}
+          {{ field }}
+          {% if field.errors %}<div id="{{ field.auto_id }}_error">{{ field.errors }}</div>{% endif %}
+        </div>
+      {% endfor %}
+      <p class="field-hint">Your details are used to respond to your inquiry.</p>
+      <button type="submit" class="cta">Send message</button>
+    </form>
+  </section>
+
+  <details class="contact-brief" id="project-brief">
+    <summary>Prefer a guided project brief? <span class="mono">8 questions</span></summary>
+    <p class="contact-intro">Share more context about a new product or an existing workflow. Answer eight questions, including your email, and I’ll review your answers and reply with initial thoughts and next steps.</p>
+    {% include "core/_brief_wizard.html" %}
+    <noscript><p>The guided brief needs JavaScript. You can use the message form above instead.</p></noscript>
+  </details>
 </div>
 {% endblock %}

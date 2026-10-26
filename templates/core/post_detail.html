@@ -1,24 +1,37 @@
 {% extends "base.html" %}
+{% load portfolio_tags %}
 
-{% block title %}{{ post.title }} | mark ocampos{% endblock %}
+{% block title %}{{ post.title }} — Mark Ocampos{% endblock %}
+{% block meta_description %}{{ post.excerpt|default:post.body|truncatewords:30|striptags }}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block og_title %}{{ post.title }} — Mark Ocampos{% endblock %}
+{% block og_description %}{{ post.excerpt|default:post.body|truncatewords:30|striptags }}{% endblock %}
 
 {% block content %}
-<article class="detail hero-anim">
-  <p class="eyebrow mono">journal · {{ post.created_at|date:"F j, Y" }}</p>
-  <h1>{{ post.title }}</h1>
-  <div class="body">
-    {{ post.body|linebreaks }}
+<article class="detail journal-detail hero-anim" itemscope itemtype="https://schema.org/BlogPosting">
+  <p class="eyebrow mono"><time itemprop="datePublished" datetime="{{ post.created_at|date:'Y-m-d' }}">{{ post.created_at|date:"F j, Y" }}</time></p>
+  <h1 itemprop="headline">{{ post.title }}</h1>
+  <div class="body" itemprop="articleBody">
+    {{ post.body|markdown }}
   </div>
 
   {% if post.images.all %}
-    <div class="filmstrip" style="margin-top: 30px;">
+    <div class="project-gallery">
       {% for gallery_img in post.images.all %}
-        <figure class="frame" style="border-top: none; padding-top: 0;">
-          <img src="{{ gallery_img.image.url }}" alt="{{ post.title }} gallery image {{ forloop.counter }}">
+        <figure class="frame">
+          <button type="button" class="photo-trigger" data-lb-src="{{ gallery_img.lightbox_url }}" data-lb-caption="{{ post.title }} · {{ forloop.counter }}" aria-label="Enlarge image {{ forloop.counter }}">
+          <img
+            src="{{ gallery_img.responsive_url }}"
+            {% if gallery_img.responsive_srcset %}srcset="{{ gallery_img.responsive_srcset }}"
+            sizes="(max-width: 540px) calc(100vw - 40px), (max-width: 820px) calc(100vw - 48px), (max-width: 1400px) calc((100vw - 128px) / 2), 644px"{% endif %}
+            alt="{{ post.title }} — image {{ forloop.counter }}"
+            loading="lazy"
+          >
+          </button>
         </figure>
       {% endfor %}
     </div>
   {% endif %}
-  <p class="mono back"><a href="{% url 'core:blog_list' %}">← back to /journal</a></p>
+  <p class="mono back"><a href="{% url 'core:blog_list' %}">◀ Log</a></p>
 </article>
 {% endblock %}

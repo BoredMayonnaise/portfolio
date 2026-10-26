@@ -3,32 +3,26 @@ import os
 
 from django.core.files.base import ContentFile
 from django.db import models
+from django.db.models.signals import post_delete
 from django.utils.text import slugify
 from django.urls import reverse
-from io import BytesIO
-from PIL import Image
 
-def optimize_image_to_webp(image_field, quality=80):
-    if not image_field or getattr(image_field, '_committed', True):
-        return
-    try:
-        img = Image.open(image_field)
-        if img.format == 'WEBP':
-            return
-        output = BytesIO()
-        img.save(output, format='WEBP', quality=quality)
-        output.seek(0)
-        new_name = os.path.splitext(image_field.name)[0] + '.webp'
-        image_field.save(new_name, ContentFile(output.read()), save=False)
-    except Exception:
-        pass
+from .images import ResponsiveImageMixin, delete_image_variants
 
 
-class Project(models.Model):
+class Project(ResponsiveImageMixin, models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True, blank=True)
     description = models.TextField()
+    problem = models.TextField(blank=True)
+    audience = models.TextField(blank=True)
+    role = models.TextField(blank=True)
+    constraints = models.TextField(blank=True)
+    decisions = models.TextField(blank=True)
+    outcome = models.TextField(blank=True)
+    lessons = models.TextField(blank=True)
     image = models.ImageField(upload_to="projects/", blank=True, null=True)
+    image_variants = models.JSONField(default=dict, blank=True, editable=False)
     tech_stack = models.CharField(
         max_length=300,
         help_text="Comma-separated list, e.g. Django, PostgreSQL, Docker",
@@ -45,12 +39,12 @@ class Project(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)
-        optimize_image_to_webp(self.image)
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse("core:project_detail", kwargs={"slug": self.slug})
 
+    @property
     def tech_list(self):
         return [t.strip() for t in self.tech_stack.split(",") if t.strip()]
 
@@ -95,10 +89,34 @@ class ContactMessage(models.Model):
         return f"{self.name} <{self.email}>"
 
 
-class Photo(models.Model):
+class BriefResponse(models.Model):
+    email = models.EmailField()
+    answers = models.JSONField()
+    ip = models.GenericIPAddressField(null=True, blank=True)
+    admin_notified = models.BooleanField(
+        default=False,
+        help_text="Whether the admin notification email was sent successfully.",
+    )
+    thank_you_sent = models.BooleanField(
+        default=False,
+        help_text="Whether the thank-you email was sent to the client.",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ("-created_at",)
+        verbose_name = "contact submission"
+        verbose_name_plural = "contact submissions"
+
+    def __str__(self):
+        return f"Contact submission <{self.email}>"
+
+
+class Photo(ResponsiveImageMixin, models.Model):
     title = models.CharField(max_length=120)
     alt = models.CharField(max_length=200, blank=True)
     image = models.ImageField(upload_to="photos/", blank=True, null=True)
+    image_variants = models.JSONField(default=dict, blank=True, editable=False)
     hash = models.CharField(
         max_length=64,
         blank=True,
@@ -147,7 +165,6 @@ class Photo(models.Model):
                 pass
 
     def save(self, *args, **kwargs):
-        optimize_image_to_webp(self.image)
         data = self._read_bytes()
         digest = hashlib.sha256(data).hexdigest() if data else ""
         if digest:
@@ -167,33 +184,42 @@ class Photo(models.Model):
         return self.title
 
 
-class ProjectImage(models.Model):
+class ProjectImage(ResponsiveImageMixin, models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="images")
     image = models.ImageField(upload_to="projects/gallery/")
+    caption = models.CharField(max_length=300, blank=True)
+    alt_text = models.CharField(max_length=240, blank=True)
+    image_variants = models.JSONField(default=dict, blank=True, editable=False)
     order = models.PositiveIntegerField(default=0)
 
     class Meta:
         ordering = ("order", "id")
-
-    def save(self, *args, **kwargs):
-        optimize_image_to_webp(self.image)
-        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.project.title} Image"
 
 
-class PostImage(models.Model):
+class PostImage(ResponsiveImageMixin, models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="images")
     image = models.ImageField(upload_to="posts/gallery/")
+    image_variants = models.JSONField(default=dict, blank=True, editable=False)
     order = models.PositiveIntegerField(default=0)
 
     class Meta:
         ordering = ("order", "id")
 
-    def save(self, *args, **kwargs):
-        optimize_image_to_webp(self.image)
-        super().save(*args, **kwargs)
-
     def __str__(self):
         return f"{self.post.title} Image"
+
+
+def _delete_responsive_variants(sender, instance, **kwargs):
+    if instance.image:
+        delete_image_variants(instance.image.storage, instance.image_variants)
+
+
+for image_model in (Project, Photo, ProjectImage, PostImage):
+    post_delete.connect(
+        _delete_responsive_variants,
+        sender=image_model,
+        dispatch_uid=f"core.delete_variants.{image_model._meta.label_lower}",
+    )

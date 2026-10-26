@@ -8,8 +8,8 @@ echo "Installing Nginx, Certbot, and Gunicorn..."
 sudo apt install -y nginx certbot python3-certbot-nginx gunicorn
 
 echo "Copying systemd service and socket files..."
-sudo cp /home/ubuntu/portfolio/deploy/systemd/portfolio.socket /etc/systemd/system/
-sudo cp /home/ubuntu/portfolio/deploy/systemd/portfolio.service /etc/systemd/system/
+sudo cp /home/ubuntu/deploy/systemd/portfolio.socket /etc/systemd/system/
+sudo cp /home/ubuntu/deploy/systemd/portfolio.service /etc/systemd/system/
 
 echo "Reloading systemd and enabling portfolio service..."
 sudo systemctl daemon-reload
@@ -18,7 +18,7 @@ sudo systemctl enable portfolio.socket
 sudo systemctl restart portfolio.service
 
 echo "Setting up Nginx..."
-sudo cp /home/ubuntu/portfolio/deploy/nginx/portfolio.conf /etc/nginx/sites-available/portfolio
+sudo cp /home/ubuntu/deploy/nginx/portfolio.conf /etc/nginx/sites-available/portfolio
 sudo ln -sf /etc/nginx/sites-available/portfolio /etc/nginx/sites-enabled/
 sudo rm -f /etc/nginx/sites-enabled/default
 

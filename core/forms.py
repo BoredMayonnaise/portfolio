@@ -1,63 +1,37 @@
 import re
 
 from django import forms
-from django.core.exceptions import ValidationError
-from django.core.validators import validate_email
 
+from .brief import (
+    FORK_QUESTION,
+    TRACK_A_QUESTIONS,
+    TRACK_B_QUESTIONS,
+    TRACK_PRODUCT,
+    get_questions_for_track,
+)
 from .models import ContactMessage
 
 MIN_MESSAGE_WORDS = 10
 
-ALLOWED_EMAIL_DOMAINS = {
-    "gmail.com", "googlemail.com",
-    "protonmail.com", "proton.me",
-    "outlook.com", "hotmail.com", "live.com", "msn.com",
-    "yahoo.com", "yahoo.co.uk", "ymail.com",
-    "icloud.com", "me.com", "mac.com",
-    "aol.com",
-    "gmx.com", "gmx.de", "gmx.net",
-    "mail.com", "zoho.com", "fastmail.com", "fastmail.fm",
-    "hey.com",
-    "tutanota.com", "tuta.io",
-    "yandex.com", "yandex.ru", "mail.ru", "rambler.ru",
-    "web.de", "t-online.de", "freenet.de",
-    "orange.fr", "free.fr", "sfr.fr",
-    "btinternet.com", "virginmedia.com",
-    "libero.it",
-    "163.com", "126.com", "qq.com",
-    "naver.com", "daum.net",
-    "bol.com.br", "uol.com.br",
-}
-
-
-def _real_tld(domain):
-    tld = domain.rsplit(".", 1)[-1]
-    return tld.isalpha() and len(tld) >= 2
-
 
 class ContactForm(forms.ModelForm):
+    honeypot = forms.CharField(
+        required=False,
+        label="Leave this field empty",
+        widget=forms.HiddenInput(attrs={"autocomplete": "off", "tabindex": "-1"}),
+    )
+
     class Meta:
         model = ContactMessage
         fields = ("name", "email", "message")
         widgets = {
-            "message": forms.Textarea(attrs={"rows": 5}),
+            "name": forms.TextInput(attrs={"autocomplete": "name"}),
+            "email": forms.EmailInput(attrs={"autocomplete": "email"}),
+            "message": forms.Textarea(attrs={"rows": 6, "aria-describedby": "message-hint"}),
         }
 
     def clean_email(self):
-        email = self.cleaned_data["email"].strip().lower()
-        try:
-            validate_email(email)
-        except ValidationError as exc:
-            raise forms.ValidationError("Enter a valid email address.") from exc
-        domain = email.rsplit("@", 1)[-1]
-        if not _real_tld(domain):
-            raise forms.ValidationError("Enter a real email address (a valid domain with a TLD).")
-        if domain not in ALLOWED_EMAIL_DOMAINS:
-            raise forms.ValidationError(
-                "Please use an email from a known provider "
-                "(e.g. Gmail, Proton Mail, Outlook, Yahoo, iCloud)."
-            )
-        return email
+        return self.cleaned_data["email"].strip().lower()
 
     def clean_message(self):
         message = self.cleaned_data["message"]
@@ -67,3 +41,49 @@ class ContactForm(forms.ModelForm):
                 f"Please write at least {MIN_MESSAGE_WORDS} words."
             )
         return message
+
+
+class BriefForm(forms.Form):
+    honeypot = forms.CharField(
+        required=False,
+        label="Leave this field empty",
+        widget=forms.HiddenInput(attrs={"autocomplete": "off", "tabindex": "-1"}),
+    )
+    email = forms.EmailField()
+    answers = forms.JSONField(required=True)
+
+    def clean_email(self):
+        return self.cleaned_data["email"].strip().lower()
+
+    def clean_answers(self):
+        raw = self.cleaned_data["answers"]
+        if not isinstance(raw, dict):
+            raise forms.ValidationError("Invalid questionnaire answers.")
+
+        track = raw.get("track")
+        if track not in FORK_QUESTION["options"]:
+            raise forms.ValidationError("Please select what brings you here today.")
+
+        expected_questions = get_questions_for_track(track)
+        expected_ids = {q["id"] for q in expected_questions}
+        if set(raw.keys()) != expected_ids:
+            raise forms.ValidationError("Incomplete questionnaire — please answer every question.")
+
+        for q in expected_questions:
+            answer = raw[q["id"]]
+            if q.get("multi"):
+                # Multi-select questions accept a non-empty list of valid options.
+                if (
+                    not isinstance(answer, list)
+                    or not answer
+                    or not all(isinstance(a, str) and a in q["options"] for a in answer)
+                    or len(set(answer)) != len(answer)
+                ):
+                    raise forms.ValidationError(
+                        "One of the answers isn't a valid option — please try again."
+                    )
+            elif not isinstance(answer, str) or answer not in q["options"]:
+                raise forms.ValidationError(
+                    "One of the answers isn't a valid option — please try again."
+                )
+        return raw

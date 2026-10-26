@@ -1,146 +1,185 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}mark ocampos — engineer · cryptographer · photographer{% endblock %}
+{% block title %}Mark Ocampos — Independent web engineer{% endblock %}
+{% block meta_description %}Independent web engineer building web applications and thoughtful interfaces. Explore projects or contact Mark Ocampos.{% endblock %}
 
-{% block content %}
-<section class="hero">
-  <div class="hero-text">
-    <p class="eyebrow hero-anim">hi, i'm mark ocampos — nice to meet you</p>
-    <h1 class="hero-anim delay-1">Data should be <em>safe</em>. Code should be <em>clean</em>. And light is worth <em>chasing</em>.</h1>
-    <p class="lede hero-anim delay-2">I build privacy-first web apps with Python and JavaScript for the backend, alongside Django, and craft modern frontends using Vite and Vue. I enjoy the quiet logic of cryptography, and keep a camera close for when the light gets interesting. Your data is treated like my own.</p>
-    <div class="hero-actions hero-anim delay-2">
-      <a class="cta" href="{% url 'core:project_list' %}">see the work →</a>
-      <a class="cta ghost" href="{% url 'core:contact' %}">say hello</a>
-    </div>
-  </div>
-
-  <div class="hero-figure hero-anim delay-1">
-    <div class="figure-media">
-      <div class="figure-bg" aria-hidden="true"></div>
-      {% include "_figure.html" %}
-    </div>
-    <p class="fig-caption mono"><span class="diamond">◇</span> arms folded · calm · ready <span class="diamond">◇</span></p>
-  </div>
-</section>
-
-<div class="ledger hero-anim delay-2" aria-hidden="true">
-  <span class="mono">python / js</span><i>◇</i><span class="mono">django</span><i>◇</i><span class="mono">vite / vue</span><i>◇</i><span class="mono">secure apis</span><i>◇</i><span class="mono">cryptography</span><i>◇</i><span class="mono">privacy</span><i>◇</i><span class="mono">photography</span><i>◇</i><span class="mono">logic</span>
-</div>
-
-<section class="section">
-  <div class="section-head reveal">
-    <span class="index mono">01</span>
-    <h2>what I do</h2>
-    <span class="head-rule"></span>
-    <span class="head-note mono">six things, no filler</span>
-  </div>
-  <div class="stack-grid">
-    <div class="stack reveal">
-      <span class="mark"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12l2 2l4-4"/></g></svg></span>
-      <h3>data protection</h3>
-      <p>Encryption in motion and at rest, the least data collected, and safe defaults. I design so that leaking is the hard thing, not the default.</p>
-    </div>
-    <div class="stack reveal">
-      <span class="mark"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="16" r="1"/><rect width="18" height="12" x="3" y="10" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></g></svg></span>
-      <h3>cryptography</h3>
-      <p>Hashes, key exchange, one-way functions. I genuinely love the maths that keeps a secret — and the discipline of proving it stays that way.</p>
-    </div>
-    <div class="stack reveal">
-      <span class="mark"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2a2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1m8 0h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1"/></svg></span>
-      <h3>logic &amp; systems</h3>
-      <p>Correct by construction, auditable, boring in the best way. Clean Python, JavaScript, and Django backends with behaviour you can reason about.</p>
-    </div>
-    <div class="stack reveal">
-      <span class="mark"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="18" height="7" x="3" y="3" rx="1"/><rect width="9" height="7" x="3" y="14" rx="1"/><rect width="5" height="7" x="16" y="14" rx="1"/></g></svg></span>
-      <h3>modern frontends</h3>
-      <p>Fluid, reactive, and snappy interfaces. I pair Vite and Vue to build user experiences that feel instantly responsive without bloating the bundle.</p>
-    </div>
-    <div class="stack reveal">
-      <span class="mark"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.914 4a1.5 1.5 0 0 0-2.474-1.561l-9 9A1.5 1.5 0 0 0 5.5 14h4.002a.5.5 0 0 1 .471.666L8.086 20a1.5 1.5 0 0 0 2.475 1.56l9-9A1.5 1.5 0 0 0 18.5 10h-3.997a.5.5 0 0 1-.472-.667z"/></svg></span>
-      <h3>performance</h3>
-      <p>Every byte matters. I optimize payloads, caching layers, and database queries to ensure the applications feel incredibly fast in every condition.</p>
-    </div>
-    <div class="stack reveal">
-      <span class="mark"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></g></svg></span>
-      <h3>photography</h3>
-      <p>A second pair of eyes. Composition, light, restraint — the same discipline that keeps my code minimal finds its way into my frames.</p>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="section-head reveal">
-    <span class="index mono">02</span>
-    <h2>selected work</h2>
-    <span class="head-rule"></span>
-    <span class="head-note mono">a few endpoints i'm proud of</span>
-  </div>
-  {% if projects %}
-    <div class="works">
-      {% for project in projects %}
-        <article class="work reveal">
-          <span class="w-num mono">{{ forloop.counter|stringformat:"02d" }}</span>
-          <div class="w-body">
-            <h3><a href="{{ project.get_absolute_url }}">{{ project.title }}</a></h3>
-            <p>{{ project.description|truncatewords:24 }}</p>
-            <p class="tags mono">{{ project.tech_list|join:" · "|lower }}</p>
-          </div>
-          <a class="w-arrow mono" href="{{ project.get_absolute_url }}">view →</a>
-        </article>
-      {% endfor %}
-    </div>
-  {% else %}
-    <p class="empty mono">nothing shipped yet — check back soon.</p>
-  {% endif %}
-</section>
-
-<section class="section">
-  <div class="section-head reveal">
-    <span class="index mono">03</span>
-    <h2>frames</h2>
-    <span class="head-rule"></span>
-    <span class="head-note mono">a strip, not a grid</span>
-  </div>
-  {% if photos %}
-    <div class="filmstrip reveal">
-      {% for photo in photos %}
-        <figure class="frame">
-          {% if photo.image %}
-            <img src="{{ photo.image.url }}" alt="{{ photo.alt|default:photo.title }}">
-          {% else %}
-            <div class="frame-ph"></div>
-          {% endif %}
-          <figcaption class="mono">
-            <span class="fx">{{ photo.hash|slice:":8"|default:"00000000" }}.jpg</span>
-            <span class="fm">{{ photo.title }}{% if photo.location %} · {{ photo.location }}{% endif %}</span>
-          </figcaption>
-        </figure>
-      {% endfor %}
-    </div>
-  {% else %}
-    <p class="empty mono">the shutter is loaded — frames coming.</p>
-  {% endif %}
-</section>
-
-<section class="section">
-  <div class="section-head reveal">
-    <span class="index mono">04</span>
-    <h2>journal</h2>
-    <span class="head-rule"></span>
-    <span class="head-note mono">recent entries</span>
-  </div>
-  {% if latest_posts %}
-    <ul class="entries reveal">
-      {% for post in latest_posts %}
-        <li>
-          <span class="e-date mono">{{ post.created_at|date:"Y · M d" }}</span>
-          <a class="e-title" href="{{ post.get_absolute_url }}">{{ post.title }}</a>
-          <span class="e-arrow mono">→</span>
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p class="empty mono">log empty.</p>
-  {% endif %}
-</section>
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/game.css' %}">
+  <script src="{% static 'js/game.js' %}" defer></script>
 {% endblock %}
+
+{% block body_class %}game-root{% endblock %}
+
+{% block site_shell %}
+<a class="skip-link" href="#main-content">Skip to content</a>
+<div id="game" class="game" data-scene="title">
+  <div class="g-bg" aria-hidden="true"></div>
+  <div class="g-glow" aria-hidden="true"></div>
+
+  {# HUD: level, xp, collected coins #}
+  <header class="g-hud">
+    <a class="g-logo" href="{% url 'core:home' %}" aria-label="Mark Ocampos">
+      <img src="{% static 'brand/brand_logo_icon.png' %}" alt="" width="44" height="44">
+    </a>
+    <nav class="g-links" aria-label="Main navigation">
+      <a href="{% url 'core:project_list' %}">Projects</a>
+      <a href="#player" data-go="player">About</a>
+      <a href="{% url 'core:blog_list' %}">Journal</a>
+      <a href="{% url 'core:contact' %}">Contact</a>
+    </nav>
+    <div class="g-stats" aria-live="polite">
+      <span class="g-lv">LV<span id="g-lv">1</span></span>
+      <div class="g-xp" aria-hidden="true"><i id="g-xp"></i></div>
+      <div class="g-coins" id="g-coins" aria-hidden="true"><b></b><b></b><b></b><b></b><b></b></div>
+    </div>
+  </header>
+
+  <main id="main-content" tabindex="-1">
+    {# 1 — TITLE #}
+    <section class="scene scene-title is-active" data-scene="title" aria-labelledby="title-heading">
+      <div class="cart" id="cart">
+        <img src="{% static 'brand/sticker_lettermark_crop.png' %}" alt="MO" width="504" height="464">
+      </div>
+      <div class="title-copy">
+        <p class="g-kicker">Independent web engineer</p>
+        <h1 id="title-heading" tabindex="-1">Mark Ocampos<span>.</span></h1>
+        <p class="g-intro">I build web applications and thoughtful interfaces, turning complex ideas into clear digital experiences.</p>
+      </div>
+      <div class="title-actions">
+        <button type="button" class="g-start" id="g-start"><span class="g-blink">▶ Start</span></button>
+        <a class="g-shortcut" href="{% url 'core:project_list' %}">View projects ↗</a>
+        <a class="g-shortcut" href="{% url 'core:contact' %}">Contact</a>
+      </div>
+    </section>
+
+    {# 2 — HUB #}
+    <section class="scene scene-hub" data-scene="hub" id="hub-scene" aria-labelledby="hub-heading">
+      <h2 class="scene-heading" id="hub-heading" tabindex="-1">Choose your path<span>.</span></h2>
+      <div class="hub" id="hub">
+        <a class="tile" href="#levels" data-go="levels">
+          <img src="{% static 'brand/brand_mark_icon.jpg' %}" alt="" loading="lazy">
+          <span class="tile-lbl">Projects <small>{{ all_projects|length }} levels</small></span>
+        </a>
+        <a class="tile" href="#player" data-go="player">
+          <img src="{% static 'brand/mo.jpg' %}" alt="" loading="lazy">
+          <span class="tile-lbl">About <small>Player 1</small></span>
+        </a>
+        <a class="tile" href="{% url 'core:blog_list' %}">
+          <img src="{% static 'brand/Cybernetic_logo_sticker_design_crop.png' %}" alt="Log" loading="lazy">
+          <span class="tile-lbl">Journal <small>Log</small></span>
+        </a>
+        <a class="tile" id="tile-join" href="{% url 'core:contact' %}">
+          <img src="{% static 'brand/sticker_hand.jpg' %}" alt="" loading="lazy">
+          <span class="tile-lbl">Contact <small>P2</small></span>
+        </a>
+      </div>
+    </section>
+
+    {# 3 — LEVELS (projects) #}
+    <section class="scene scene-levels" data-scene="levels" id="levels" aria-labelledby="levels-heading">
+      <h2 class="scene-heading" id="levels-heading" tabindex="-1">Projects<span>.</span></h2>
+      <div class="lv-view" id="lv-view">
+        <div class="lv-track" id="lv-track">
+          {% for p in all_projects %}
+            <a class="lv-card" href="{{ p.get_absolute_url }}" aria-label="{{ p.title }}">
+              <div class="lv-img">
+                {% if p.image %}
+                  <img src="{{ p.responsive_url }}"
+                       {% if p.responsive_srcset %}srcset="{{ p.responsive_srcset }}" sizes="(max-width: 768px) 72vw, 420px"{% else %}sizes="(max-width: 768px) 72vw, 420px"{% endif %}
+                       data-lightbox="{{ p.lightbox_url }}" alt="{{ p.title }}" loading="lazy">
+                {% else %}
+                  <img class="is-fallback" src="{% static 'brand/brand_logo_icon.png' %}" alt="{{ p.title }}" loading="lazy">
+                {% endif %}
+              </div>
+              <div class="lv-meta"><span>{{ p.title }}</span><span class="lv-num">{{ forloop.counter|stringformat:"02d" }}</span></div>
+              <div class="lv-description">
+                <p>{{ p.description|truncatewords:14 }}</p>
+                {% if p.role %}<p><strong>My role:</strong> {{ p.role|truncatewords:6 }}</p>{% endif %}
+                {% if p.outcome %}<p><strong>Outcome:</strong> {{ p.outcome|truncatewords:10 }}</p>{% endif %}
+              </div>
+              <span class="lv-go" aria-hidden="true">▶</span>
+            </a>
+          {% empty %}
+            <p class="lv-meta">Project write-ups are on their way.</p>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="lv-nav">
+        <button type="button" id="lv-prev" aria-label="Previous">◀</button>
+        <button type="button" id="lv-next" aria-label="Next">▶</button>
+      </div>
+      <div class="lv-dots" id="lv-dots" aria-hidden="true">{% for p in all_projects %}<i></i>{% endfor %}</div>
+      <button type="button" class="g-back" data-go="hub">◀ Menu</button>
+    </section>
+
+    {# 4 — PLAYER (HORIZONTAL 3D CARD & STATS) #}
+    <section class="scene scene-player" data-scene="player" id="player" aria-labelledby="player-heading">
+      <h2 class="scene-heading" id="player-heading" tabindex="-1">About Mark<span>.</span></h2>
+      <div class="player">
+
+        {# Horizontal 3D Card #}
+        <div class="p-3d-scene" id="p-scene">
+          <div class="p-3d-card" id="p-card-3d">
+
+            {# Front Face: Operator ID #}
+            <div class="p-face p-front">
+              <div class="p-card-sheen" id="p-sheen" aria-hidden="true"></div>
+
+              <div class="p-front-layout">
+                <div class="p-avatar-wrap">
+                  <img src="{% static 'brand/mo.jpg' %}" alt="Mark Ocampos" width="300" height="300" class="p-avatar-img">
+                  <div class="p-scanline" aria-hidden="true"></div>
+                </div>
+
+                <div class="p-front-info">
+                  <img src="{% static 'brand/brand_logo_icon.png' %}" alt="" width="32" height="32" class="p-brand-logo">
+                  <h3 class="p-front-name">MARK OCAMPOS</h3>
+                  <p class="p-front-role">WEB ARCHITECT</p>
+                </div>
+              </div>
+            </div>
+
+            {# Back Face: Cropped Tech Pass #}
+            <div class="p-face p-back" aria-hidden="true">
+              <div class="p-card-sheen" aria-hidden="true"></div>
+              <img src="{% static 'brand/tech_id_card_crop.png' %}" alt="Mark Ocampos Tech Card" class="p-back-img" width="797" height="524">
+            </div>
+
+          </div>
+          <button type="button" class="p-flip" id="p-flip" aria-pressed="false">Flip profile card</button>
+        </div>
+
+        {# Player Stats & Action #}
+        <div class="p-side">
+          <div class="p-side-header">
+            <span class="p-sub-title">// Built in practice</span>
+          </div>
+
+          <p class="g-intro">I’m an independent web engineer with a focus on privacy and an eye for design. Here’s where I put those skills to work.</p>
+          <ul class="p-capabilities">
+            {% for p in all_projects %}
+              <li><a href="{{ p.get_absolute_url }}">{{ p.title }} ↗<span>{{ p.tech_list|join:", " }}</span></a></li>
+            {% empty %}
+              <li><a href="{% url 'core:project_list' %}">Explore my work ↗</a></li>
+            {% endfor %}
+          </ul>
+
+          <div class="p-actions">
+            <a class="g-btn p-cta" href="{% url 'core:contact' %}">Contact me ↗</a>
+          </div>
+        </div>
+
+      </div>
+      <button type="button" class="g-back" data-go="hub">◀ Menu</button>
+    </section>
+  </main>
+
+  <div class="g-toast" id="g-toast" role="status">
+    <img src="{% static 'brand/sticker_hand.jpg' %}" alt="">
+    <h2>Level Up</h2>
+  </div>
+  <div class="g-wipe" id="g-wipe" aria-hidden="true"></div>
+  <div class="g-crt" aria-hidden="true"></div>
+</div>
+{% endblock site_shell %}

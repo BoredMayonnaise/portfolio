@@ -173,9 +173,16 @@ STORAGES = {
         'BACKEND': 'django.core.files.storage.FileSystemStorage',
     },
     'staticfiles': {
+        # CompressedManifestStaticFilesStorage appends a content hash to every
+        # filename (e.g. style.abc123ef.css) so cache busting is automatic on
+        # every deploy — no manual ?v= query strings needed.
         'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
     },
 }
+
+# Hashed filenames are immutable — tell browsers (and CDNs) to cache for 1 year.
+# Non-hashed files (e.g. robots.txt) get WhiteNoise's default 60-second TTL.
+WHITENOISE_MAX_AGE = 31_536_000  # 1 year in seconds
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -205,7 +212,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 CSRF_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SAMESITE = "Lax"
 DATA_UPLOAD_MAX_MEMORY_SIZE = 5_000_000
-DATA_UPLOAD_MAX_NUMBER_FILES = 1
+DATA_UPLOAD_MAX_NUMBER_FILES = 10
 
 CSRF_TRUSTED_ORIGINS = [
     o.strip()
@@ -317,8 +324,8 @@ CONTENT_SECURITY_POLICY = {
     "DIRECTIVES": {
         "default-src": ["'self'"],
         "script-src": ["'self'"],
-        "style-src": ["'self'", "https://fonts.googleapis.com"],
-        "font-src": ["'self'", "https://fonts.gstatic.com"],
+        "style-src": ["'self'"],
+        "font-src": ["'self'"],
         "img-src": ["'self'", "data:"],
         "media-src": ["'self'"],
         "manifest-src": ["'self'"],

@@ -1,0 +1,15 @@
+venv/
+__pycache__/
+*.py[cod]
+.git/
+.gitignore
+.env
+db.sqlite3
+media/
+staticfiles/
+deploy/
+certbot/
+optimize_image.sh
+setup_production.sh
+seed.py
+*.md

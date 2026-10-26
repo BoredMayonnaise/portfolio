@@ -11,5 +11,8 @@ urlpatterns = [
     path("projects/<slug:slug>/", views.ProjectDetailView.as_view(), name="project_detail"),
     path("blog/", views.BlogListView.as_view(), name="blog_list"),
     path("blog/<slug:slug>/", views.PostDetailView.as_view(), name="post_detail"),
-    path("contact/", views.ContactView.as_view(), name="contact"),
+    path("contact/", views.BriefPageView.as_view(), name="contact"),
+    path("brief/submit/", views.brief_submit, name="brief_submit"),
+    path("sitemap.xml", views.SitemapView.as_view(), name="sitemap"),
+    path("robots.txt", views.robots_txt, name="robots_txt"),
 ]

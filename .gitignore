@@ -22,6 +22,9 @@ uploads/
 opencode.json
 opencode.jsonc
 
+# Let's Encrypt certs (local dev host)
+certbot/
+
 # Editors / OS
 .vscode/
 .idea/
@@ -31,3 +34,6 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Local compose backups
+docker-compose.yml.bak*

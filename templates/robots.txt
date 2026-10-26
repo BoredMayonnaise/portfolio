@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /contact/
+
+Sitemap: https://markocampos.rhymvex.space/sitemap.xml

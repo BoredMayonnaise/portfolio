@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New {{ track_label }} from {{ response.email }}</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #090b03; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #deefef; -webkit-font-smoothing: antialiased;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #090b03; padding: 40px 16px;">
+    <tr>
+      <td align="center">
+        <!-- Main Card -->
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; background-color: #11160f; border: 1px solid #1f2d1c; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);">
+          
+          <!-- Green Accent Bar -->
+          <tr>
+            <td style="height: 4px; background: #00ff66; font-size: 0; line-height: 0;">&nbsp;</td>
+          </tr>
+
+          <!-- Header / Tag -->
+          <tr>
+            <td style="padding: 32px 36px 8px;">
+              <span style="font-family: 'SFMono-Regular', Consolas, 'Courier New', monospace; font-size: 11px; letter-spacing: 2px; color: #00ff66; text-transform: uppercase; font-weight: bold;">
+                &#9670;&nbsp; INCOMING {{ track_label|upper }}
+              </span>
+            </td>
+          </tr>
+
+          <!-- Heading -->
+          <tr>
+            <td style="padding: 12px 36px 20px;">
+              <h1 style="margin: 0; font-size: 24px; line-height: 1.3; color: #ffffff; font-weight: 700;">
+                New Brief from <a href="mailto:{{ response.email }}" style="color: #00ff66; text-decoration: none;">{{ response.email }}</a>
+              </h1>
+            </td>
+          </tr>
+
+          <!-- Metadata Box -->
+          <tr>
+            <td style="padding: 0 36px 28px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #0c100b; border: 1px solid #1c2719; border-radius: 8px; padding: 16px 20px;">
+                <tr>
+                  <td style="font-family: 'SFMono-Regular', Consolas, 'Courier New', monospace; font-size: 12px; color: #8b9e92; line-height: 1.8;">
+                    <div><strong style="color: #deefef;">CLIENT:</strong> <a href="mailto:{{ response.email }}" style="color: #00ff66; text-decoration: underline;">{{ response.email }}</a></div>
+                    <div><strong style="color: #deefef;">IP ADDR:</strong> {{ response.ip|default:"Unknown" }}</div>
+                    {% if response.created_at %}<div><strong style="color: #deefef;">SUBMITTED:</strong> {{ response.created_at|date:"Y-m-d H:i:s" }} UTC</div>{% endif %}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Section Label -->
+          <tr>
+            <td style="padding: 0 36px 12px;">
+              <div style="font-family: 'SFMono-Regular', Consolas, 'Courier New', monospace; font-size: 11px; letter-spacing: 1.5px; color: #00ff66; text-transform: uppercase; font-weight: bold;">
+                // RESPONSES
+              </div>
+            </td>
+          </tr>
+
+          <!-- Q&A List -->
+          <tr>
+            <td style="padding: 0 36px 28px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                {% for item in qa_items %}
+                <tr>
+                  <td style="padding-bottom: 16px;">
+                    <div style="font-size: 13px; font-weight: 600; color: #b8c9c0; margin-bottom: 6px;">
+                      {{ item.question }}
+                    </div>
+                    <div style="font-size: 14px; color: #ffffff; background-color: #161e14; border-left: 3px solid #00ff66; border-radius: 4px; padding: 10px 14px; line-height: 1.5; font-family: 'SFMono-Regular', Consolas, 'Courier New', monospace;">
+                      {{ item.answer }}
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </table>
+            </td>
+          </tr>
+
+          <!-- Action CTA -->
+          <tr>
+            <td style="padding: 0 36px 36px;">
+              <table role="presentation" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="background-color: #00ff66; border-radius: 4px; text-align: center;">
+                    <a href="mailto:{{ response.email }}" style="display: inline-block; padding: 14px 28px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; font-weight: 700; color: #090b03; text-decoration: none; letter-spacing: 0.5px;">
+                      &rarr; Reply to {{ response.email }}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Footer Bar -->
+          <tr>
+            <td style="padding: 16px 36px; background-color: #0c100b; border-top: 1px solid #182215; font-family: 'SFMono-Regular', Consolas, 'Courier New', monospace; font-size: 11px; color: #5a6e60; letter-spacing: 0.5px;">
+              markocampos.rhymvex.space &bull; Admin Notification
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

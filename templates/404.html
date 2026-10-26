@@ -1,25 +1,14 @@
 {% extends "base.html" %}
-
-{% block title %}404 — not found | mark ocampos{% endblock %}
-
+{% block title %}404 — Mark Ocampos{% endblock %}
 {% block content %}
-<section class="hero">
-  <header class="page-head hero-anim">
-    <p class="eyebrow mono">error 404 — not found</p>
-    <h1>This path leads <em>nowhere</em>.</h1>
-    <p class="sub">The page you're after doesn't exist, or it moved. Nothing leaked, nothing lost — it's just not here.</p>
-    <div class="hero-actions hero-anim delay-2">
-      <a class="cta" href="{% url 'core:home' %}">back to home →</a>
-      <a class="cta ghost" href="{% url 'core:project_list' %}">see the work</a>
-    </div>
-  </header>
-
-  <div class="hero-figure hero-anim delay-1">
-    <div class="figure-media">
-      <div class="figure-bg" aria-hidden="true"></div>
-      {% include "_koboyo_shrug.html" %}
-    </div>
-    <p class="fig-caption mono"><span class="diamond">◇</span> both palms up · nothing here <span class="diamond">◇</span></p>
+{% load static %}
+<section class="pg-screen" aria-labelledby="e-title">
+  <div class="pg-sprite" id="pg-sprite" aria-hidden="true"></div>
+  <p class="pg-big" id="pg-big">404</p>
+  <h1 class="pg-title" id="e-title">Level not found</h1>
+  <div class="pg-actions">
+    <a class="cta" href="{% url 'core:home' %}"><span class="pg-blink">▶</span> Menu</a>
+    <a class="text-link" href="{% url 'core:project_list' %}">Levels</a>
   </div>
 </section>
 {% endblock %}
