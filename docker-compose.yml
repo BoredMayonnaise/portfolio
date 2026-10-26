@@ -13,12 +13,12 @@ services:
       - ./static:/app/static
       - ./core:/app/core
     expose:
-      - "8000"
+      - "1001"
     networks:
       - default
       - coolify
     ports:
-      - "127.0.0.1:1000:8000"
+      - "127.0.0.1:1001:1001"
     healthcheck:
       test: ["CMD", "python", "manage.py", "check"]
       interval: 30s
